@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+
+<StackPane
+    fx:id="root"
+    xmlns="http://javafx.com/javafx/fxml"
+    xmlns:fx="http://javafx.com/fxml/1"
+    fx:controller="controllers.startingScrController"
+    stylesheets="@../../styles/global.css">
+    <children>
+        <ImageView fx:id="bg_img" preserveRatio="true">
+            <Image url="@../../media/pictures/others/bg2a.png"/>
+        </ImageView>
+        <AnchorPane fx:id="particle_pane"/>
+    </children>
+</StackPane>
