@@ -8,6 +8,17 @@
     -fx-font-size: 14px;
 }
 
+.div1 {
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 100% ,#00000044, #00000088);
+    -fx-background-radius: 10px;
+    -fx-border-color: linear-gradient(from 0% 0% to 100% 100% ,#53732f88, #313e2188);
+    -fx-border-width: 10px;
+    -fx-border-radius: 10px;
+    -fx-alignment: center;
+    -fx-padding: 50px;
+    -fx-font-size: 2em;
+}
+
 .root-pane{
     
 }
@@ -33,16 +44,7 @@
     -fx-alignment: center;
 }
 
-.main-div {
-    -fx-background-color: linear-gradient(from 0% 0% to 100% 100% ,#00000044, #00000088);
-    -fx-background-radius: 10px;
-    -fx-border-color: linear-gradient(from 0% 0% to 100% 100% ,#53732f88, #313e2188);
-    -fx-border-width: 10px;
-    -fx-border-radius: 10px;
-    -fx-alignment: center;
-    -fx-padding: 50px;
-    -fx-font-size: 2em;
-}
+
 
 .div2 {
     -fx-background-color: linear-gradient(from 0% 0% to 100% 100% ,#00000044, #00000088);

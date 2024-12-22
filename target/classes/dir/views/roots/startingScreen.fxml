@@ -10,6 +10,7 @@
     xmlns="http://javafx.com/javafx/fxml"
     xmlns:fx="http://javafx.com/fxml/1"
     fx:controller="dir.controllers.startingScrController"
+    styleClass="parent"
     stylesheets="@../../styles/global.css">
     <children>
         <ImageView fx:id="bg_img" preserveRatio="true">

@@ -5,9 +5,10 @@
 <?import javafx.scene.image.Image?>
 
 <VBox xmlns="http://javafx.com/javafx"
-      xmlns:fx="http://javafx.com/fxml"
-      spacing="35"
-      alignment="CENTER">
+        xmlns:fx="http://javafx.com/fxml"
+        spacing="35"
+        fx:id="container"
+        alignment="CENTER">
     <children>
         <ImageView fx:id="title_img" preserveRatio="true">
             <image>

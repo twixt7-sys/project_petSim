@@ -3,6 +3,7 @@ package dir.utilities;
 import java.io.IOException;
 
 import dir.Main;
+import dir.controllers.startingScrController;
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.ParallelTransition;
@@ -16,6 +17,7 @@ import javafx.scene.Scene;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -106,7 +108,7 @@ public class Util {
         img.fitHeightProperty().bind(Main.scene.heightProperty().multiply(multiplier).add(addend));
     }
 
-    public static void bindPane(StackPane pane, double multiplier, double addend) {
+    public static void bindStackPane(StackPane pane, double multiplier, double addend) {
         pane.prefWidthProperty().bind(Main.scene.widthProperty().multiply(multiplier).add(addend));
         pane.prefHeightProperty().bind(Main.scene.heightProperty().multiply(multiplier).add(addend));
     }
@@ -151,8 +153,10 @@ public class Util {
         translateBy(imageView, duration, false, range, true, TranslateTransition.INDEFINITE);
     }
 
-    public static void blinkFade(Node imageView, double duration) {
-        fade(imageView, duration, 0, 1, true, -1);
+    public static void blinkFade(Node imageView, double duration, boolean active) {
+        if (active) {
+            fade(imageView, duration, 0, 1, true, -1);
+        }
     }
 
     public static void fadeIn(Node imageView, double duration) {
@@ -252,6 +256,40 @@ public class Util {
         loader.setController(controller);
         Parent child = loader.load();
         root.getChildren().add(child);
+    }
+
+    public static void addSpacebarListener(Scene scene, Runnable action) {
+        scene.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.SPACE) {
+                action.run();
+            }
+        });
+    }
+
+    public static void addLeftRightKeyListeners(Scene scene, Runnable incrementAction, Runnable decrementAction) {
+        scene.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.RIGHT) {
+                incrementAction.run();
+            } else if (event.getCode() == KeyCode.LEFT) {
+                decrementAction.run();
+            }
+        });
+    }
+
+    public static boolean addChildOnce(StackPane root, String path, startingScrController controller, boolean bool_var) {
+        if (!bool_var) {
+            try {
+                Util.addChild(root, path, controller);
+                return true;
+            } catch (IOException e) {
+                return false;
+            }
+        }
+        return false;
+    }
+
+    public static void removeFromStackPane(Node node) {
+        ((StackPane) node.getParent()).getChildren().remove(node);
     }
 
 }

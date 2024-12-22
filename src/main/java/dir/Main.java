@@ -26,6 +26,7 @@ public class Main extends Application {
         setStage(stage);
 
         Util.playAudio(mp, true);
+
     }
 
     public static void main(String[] args) {
