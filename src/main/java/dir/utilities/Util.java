@@ -195,8 +195,14 @@ public class Util {
         particleTimeline.setCycleCount(Timeline.INDEFINITE);
         particleTimeline.play();
 
-        particlePane.widthProperty().addListener((obs, oldVal, newVal) -> spawnParticle(particlePane, color, min_size, size_range));
-        particlePane.heightProperty().addListener((obs, oldVal, newVal) -> spawnParticle(particlePane, color, min_size, size_range));
+        particlePane.widthProperty().addListener((obs, oldVal, newVal) -> {
+            particleTimeline.stop();
+            particleTimeline.play();
+        });
+        particlePane.heightProperty().addListener((obs, oldVal, newVal) -> {
+            particleTimeline.stop();
+            particleTimeline.play();
+        });
     }
 
     private static void spawnParticle(AnchorPane particlePane, Color color, double min_size, double size_range) {
@@ -241,11 +247,11 @@ public class Util {
         return FXMLLoader.load(Main.class.getResource(views_path + fxml + ".fxml"));
     }
 
-    public static void addChild(StackPane root, String fxmlPath) {
-        try {
-            root.getChildren().add(loadFXML(fxmlPath));
-        } catch (IOException e) {
-        }
+    public static void addChild(StackPane root, String fxmlPath, Object controller) throws IOException {
+        FXMLLoader loader = new FXMLLoader(controller.getClass().getResource("/dir/views/" + fxmlPath + ".fxml"));
+        loader.setController(controller);
+        Parent child = loader.load();
+        root.getChildren().add(child);
     }
 
 }
