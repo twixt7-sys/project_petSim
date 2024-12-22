@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+
+<VBox xmlns="http://javafx.com/javafx"
+        xmlns:fx="http://javafx.com/fxml"
+        spacing="10"
+        alignment="CENTER">
+    <children>
+        <ImageView fx:id="title_img" preserveRatio="true">
+            <image>
+                <Image url="@../../media/pictures/title/petSim_title.png"/>
+            </image>
+        </ImageView>
+        <ImageView fx:id="pstp_img" preserveRatio="true">
+            <image>
+                <Image url="@../../media/pictures/others/pstp.png"/>
+            </image>
+        </ImageView>
+    </children>
+</VBox>

@@ -16,15 +16,15 @@ import javafx.scene.Scene;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 public class Util {
@@ -95,10 +95,10 @@ public class Util {
     }
 
     // Background setup methods
-    public static void setBackground(ImageView bg_img, Pane particle_pane) {
-        bg_img.setImage(Main.bg_img.getImage());
-        Util.createDustEffect(particle_pane, Main.scene.getWidth(), Main.scene.getHeight(), Color.GREENYELLOW, 0.5, 3);
+    public static void set_modified_bg(ImageView bg_img, AnchorPane particle_pane, Color color) {
         bindImageHeight(bg_img, 1, 0);
+        bindAnchorPane(particle_pane, 1, 0);
+        createDustEffect(particle_pane, Main.scene.getWidth(), Main.scene.getHeight(), color, 3, 7);
     }
 
     // Bind methods
@@ -122,6 +122,11 @@ public class Util {
     }
 
     public static void bindHBox(HBox pane, double multiplier, double addend) {
+        pane.prefWidthProperty().bind(Main.scene.widthProperty().multiply(multiplier).add(addend));
+        pane.prefHeightProperty().bind(Main.scene.heightProperty().multiply(multiplier).add(addend));
+    }
+
+    public static void bindAnchorPane(AnchorPane pane, double multiplier, double addend) {
         pane.prefWidthProperty().bind(Main.scene.widthProperty().multiply(multiplier).add(addend));
         pane.prefHeightProperty().bind(Main.scene.heightProperty().multiply(multiplier).add(addend));
     }
@@ -178,11 +183,14 @@ public class Util {
     }
 
     public static ImageView createImage(String png_file) {
-        return new ImageView(new Image(Main.class.getResourceAsStream(pictures_path + png_file + ".png")));
+        ImageView imageView = new ImageView(new Image(Main.class.getResourceAsStream(pictures_path + png_file + ".png")));
+        imageView.setFitWidth(900); // Set appropriate width
+        imageView.setFitHeight(600); // Set appropriate height
+        return imageView;
     }
 
     // Other effects
-    public static void createDustEffect(Pane particlePane, double backgroundWidth, double backgroundHeight, Color color, double min_size, double size_range) {
+    public static void createDustEffect(AnchorPane particlePane, double backgroundWidth, double backgroundHeight, Color color, double min_size, double size_range) {
         Timeline particleTimeline = new Timeline(new KeyFrame(Duration.millis(50), event -> spawnParticle(particlePane, color, min_size, size_range)));
         particleTimeline.setCycleCount(Timeline.INDEFINITE);
         particleTimeline.play();
@@ -191,11 +199,11 @@ public class Util {
         particlePane.heightProperty().addListener((obs, oldVal, newVal) -> spawnParticle(particlePane, color, min_size, size_range));
     }
 
-    private static void spawnParticle(Pane particlePane, Color color, double min_size, double size_range) {
+    private static void spawnParticle(AnchorPane particlePane, Color color, double min_size, double size_range) {
         double backgroundWidth = particlePane.getWidth();
         double backgroundHeight = particlePane.getHeight();
 
-        Circle particle = new Circle(Math.random() * min_size + size_range, color);
+        Rectangle particle = new Rectangle(Math.random() * min_size + size_range, Math.random() * min_size + size_range, color);
         particle.setOpacity(0.8);
 
         particle.setTranslateX(Math.random() * backgroundWidth);
@@ -230,7 +238,14 @@ public class Util {
     }
 
     public static Parent loadFXML(String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource(views_path + fxml + ".fxml"));
-        return fxmlLoader.load();
+        return FXMLLoader.load(Main.class.getResource(views_path + fxml + ".fxml"));
     }
+
+    public static void addChild(StackPane root, String fxmlPath) {
+        try {
+            root.getChildren().add(loadFXML(fxmlPath));
+        } catch (IOException e) {
+        }
+    }
+
 }

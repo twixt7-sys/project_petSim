@@ -9,11 +9,13 @@
     fx:id="root"
     xmlns="http://javafx.com/javafx/fxml"
     xmlns:fx="http://javafx.com/fxml/1"
-    fx:controller="controllers.startingScrController"
+    fx:controller="dir.controllers.startingScrController"
     stylesheets="@../../styles/global.css">
     <children>
         <ImageView fx:id="bg_img" preserveRatio="true">
-            <Image url="@../../media/pictures/others/bg2a.png"/>
+            <image>
+                <Image url="@../../media/pictures/others/bg2a.png"/>
+            </image>
         </ImageView>
         <AnchorPane fx:id="particle_pane"/>
     </children>

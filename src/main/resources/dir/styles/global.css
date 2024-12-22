@@ -1,0 +1,72 @@
+@font-face {
+    font-family: 'Dogica';
+    src: url('fonts/dogicabold.ttf') format('truetype');
+}
+
+.root {
+    -fx-font-family: 'Dogica', sans-serif;
+    -fx-font-size: 14px;
+}
+
+.root-pane{
+    
+}
+
+.starting-btn {
+    -fx-pref-width: 500px;
+    -fx-background-color: linear-gradient(#b1f56388, #34ad3888);
+    -fx-text-fill: linear-gradient(#f0ffe1, #bfffc1);
+    -fx-font-size: 12px;
+    -fx-padding: 20 30 20 30;
+    -fx-border-radius: 50;
+    -fx-background-radius: 50;
+}
+
+.parent{
+    -fx-padding:60px;
+    -fx-font-size: 16px;
+}
+
+.div-label{
+    -fx-text-fill: linear-gradient(#f0ffe1, #bfffc1);
+    -fx-font-size: 16px;
+    -fx-alignment: center;
+}
+
+.main-div {
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 100% ,#00000044, #00000088);
+    -fx-background-radius: 10px;
+    -fx-border-color: linear-gradient(from 0% 0% to 100% 100% ,#53732f88, #313e2188);
+    -fx-border-width: 10px;
+    -fx-border-radius: 10px;
+    -fx-alignment: center;
+    -fx-padding: 50px;
+    -fx-font-size: 2em;
+}
+
+.div2 {
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 100% ,#00000044, #00000088);
+    -fx-background-radius: 10px;
+    -fx-border-color: linear-gradient(from 0% 0% to 100% 100% ,#53732f88, #313e2188);
+    -fx-border-width: 10px;
+    -fx-border-radius: 10px;
+    -fx-alignment: center;
+    -fx-padding: 50px;
+    -fx-font-size: 2em;
+}
+
+.v-box1{
+    -fx-pref-height: 100%;
+    -fx-alignment: center;
+    -fx-spacing: 20px;
+}
+
+.v-box2{
+    -fx-pref-height: 100%;
+    -fx-spacing: 20px;
+}
+
+.divider {
+    -fx-color: #313e21;
+    -fx-padding: 10px 0;
+}
