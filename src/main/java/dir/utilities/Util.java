@@ -1,13 +1,15 @@
 package dir.utilities;
 
 import java.io.IOException;
+import java.util.List;
 
 import dir.Main;
-import dir.controllers.startingScrController;
+import dir.events.EventNode;
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.ParallelTransition;
 import javafx.animation.PauseTransition;
+import javafx.animation.ScaleTransition;
 import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXMLLoader;
@@ -21,6 +23,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
@@ -31,16 +34,16 @@ import javafx.util.Duration;
 
 public class Util {
 
-    static String views_path = "views/";
-    static String pictures_path = "media/pictures/";
-    static String audios_path = "media/audios/";
+    static final String VIEWS_PATH = "views/";
+    static final String PICTURES_PATH = "media/pictures/";
+    static final String AUDIOS_PATH = "media/audios/";
 
     // Switch Scene Methods
     public static void switchTo(Node div, String fxml) {
-        Util.easeOut(div, 0.5);
-        Util.delay(0.5, () -> {
+        easeOut(div, 0.5);
+        delay(0.5, () -> {
             try {
-                Util.setRoot(fxml);
+                setRoot(fxml);
             } catch (IOException e) {
             }
         });
@@ -74,19 +77,22 @@ public class Util {
 
     private static TranslateTransition translateBy(Node node, double duration, boolean horiz, double by, boolean auto_reverse, int cycle_count) {
         TranslateTransition translate = new TranslateTransition(Duration.seconds(duration), node);
-        Runnable run = (horiz) ? () -> translate.setByX(by) : () -> translate.setByY(by);
+        if (horiz) {
+            translate.setByX(by);
+        } else {
+            translate.setByY(by);
+        }
         translate.setAutoReverse(auto_reverse);
         translate.setCycleCount(cycle_count);
-        run.run();
         translate.play();
         return translate;
     }
 
     // Transition Animations
-    public static void easeIn(Node node) {
+    public static void easeIn(Node node, double duration) {
         double parent_height = -node.getBoundsInParent().getHeight();
-        translate(node, 1, false, parent_height * 0.1, 0, false, 1);
-        fade(node, 1, 0, 1, false, 1);
+        translate(node, duration, false, parent_height * 0.1, 0, false, 1);
+        fade(node, duration, 0, 1, false, 1);
     }
 
     public static void easeOut(Node node, double duration) {
@@ -96,11 +102,21 @@ public class Util {
         translate(node, duration, false, startY, endY, false, 1);
     }
 
+    public static void transitionWidth(Node node, double duration) {
+        if (node.getScaleX() == 1) {
+            return; // Check if transition is already applied
+        }
+        ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(duration), node);
+        scaleTransition.setFromX(0);
+        scaleTransition.setToX(1);
+        scaleTransition.play();
+    }
+
     // Background setup methods
-    public static void set_modified_bg(ImageView bg_img, AnchorPane particle_pane, Color color) {
-        bindImageHeight(bg_img, 1, 0);
-        bindAnchorPane(particle_pane, 1, 0);
-        createDustEffect(particle_pane, Main.scene.getWidth(), Main.scene.getHeight(), color, 3, 7);
+    public static void setModifiedBg(ImageView bgImg, AnchorPane particlePane, Color color) {
+        bindImageHeight(bgImg, 1, 0);
+        bindAnchorPane(particlePane, 1, 0);
+        createDustEffect(particlePane, Main.scene.getWidth(), Main.scene.getHeight(), color, 3, 7);
     }
 
     // Bind methods
@@ -108,29 +124,29 @@ public class Util {
         img.fitHeightProperty().bind(Main.scene.heightProperty().multiply(multiplier).add(addend));
     }
 
-    public static void bindStackPane(StackPane pane, double multiplier, double addend) {
+    public static void bindPane(Region pane, double multiplier, double addend) {
         pane.prefWidthProperty().bind(Main.scene.widthProperty().multiply(multiplier).add(addend));
         pane.prefHeightProperty().bind(Main.scene.heightProperty().multiply(multiplier).add(addend));
+    }
+
+    public static void bindStackPane(StackPane pane, double multiplier, double addend) {
+        bindPane(pane, multiplier, addend);
     }
 
     public static void bindBorderPane(BorderPane pane, double multiplier, double addend) {
-        pane.prefWidthProperty().bind(Main.scene.widthProperty().multiply(multiplier).add(addend));
-        pane.prefHeightProperty().bind(Main.scene.heightProperty().multiply(multiplier).add(addend));
+        bindPane(pane, multiplier, addend);
     }
 
     public static void bindVBox(VBox pane, double multiplier, double addend) {
-        pane.prefWidthProperty().bind(Main.scene.widthProperty().multiply(multiplier).add(addend));
-        pane.prefHeightProperty().bind(Main.scene.heightProperty().multiply(multiplier).add(addend));
+        bindPane(pane, multiplier, addend);
     }
 
     public static void bindHBox(HBox pane, double multiplier, double addend) {
-        pane.prefWidthProperty().bind(Main.scene.widthProperty().multiply(multiplier).add(addend));
-        pane.prefHeightProperty().bind(Main.scene.heightProperty().multiply(multiplier).add(addend));
+        bindPane(pane, multiplier, addend);
     }
 
     public static void bindAnchorPane(AnchorPane pane, double multiplier, double addend) {
-        pane.prefWidthProperty().bind(Main.scene.widthProperty().multiply(multiplier).add(addend));
-        pane.prefHeightProperty().bind(Main.scene.heightProperty().multiply(multiplier).add(addend));
+        bindPane(pane, multiplier, addend);
     }
 
     // Apply methods
@@ -174,28 +190,29 @@ public class Util {
     }
 
     // Create Methods
-    public static Scene createScene(String fxml_file, double width, double height) {
+    public static Scene createScene(String fxmlFile, double width, double height) {
         try {
-            return new Scene(loadFXML(fxml_file), width, height);
+            return new Scene(loadFXML(fxmlFile), width, height);
         } catch (IOException e) {
+            e.printStackTrace(); // Log the exception
             return null;
         }
     }
 
-    public static MediaPlayer createMediaPlayer(String mp4_file) {
-        return new MediaPlayer(new Media(Main.class.getResource(audios_path + mp4_file + ".mp4").toExternalForm()));
+    public static MediaPlayer createMediaPlayer(String mp4File) {
+        return new MediaPlayer(new Media(Main.class.getResource(AUDIOS_PATH + mp4File + ".mp4").toExternalForm()));
     }
 
-    public static ImageView createImage(String png_file) {
-        ImageView imageView = new ImageView(new Image(Main.class.getResourceAsStream(pictures_path + png_file + ".png")));
+    public static ImageView createImage(String pngFile) {
+        ImageView imageView = new ImageView(new Image(Main.class.getResourceAsStream(PICTURES_PATH + pngFile + ".png")));
         imageView.setFitWidth(900); // Set appropriate width
         imageView.setFitHeight(600); // Set appropriate height
         return imageView;
     }
 
     // Other effects
-    public static void createDustEffect(AnchorPane particlePane, double backgroundWidth, double backgroundHeight, Color color, double min_size, double size_range) {
-        Timeline particleTimeline = new Timeline(new KeyFrame(Duration.millis(50), event -> spawnParticle(particlePane, color, min_size, size_range)));
+    public static void createDustEffect(AnchorPane particlePane, double backgroundWidth, double backgroundHeight, Color color, double minSize, double sizeRange) {
+        Timeline particleTimeline = new Timeline(new KeyFrame(Duration.millis(50), event -> spawnParticle(particlePane, color, minSize, sizeRange)));
         particleTimeline.setCycleCount(Timeline.INDEFINITE);
         particleTimeline.play();
 
@@ -209,11 +226,11 @@ public class Util {
         });
     }
 
-    private static void spawnParticle(AnchorPane particlePane, Color color, double min_size, double size_range) {
+    private static void spawnParticle(AnchorPane particlePane, Color color, double minSize, double sizeRange) {
         double backgroundWidth = particlePane.getWidth();
         double backgroundHeight = particlePane.getHeight();
 
-        Rectangle particle = new Rectangle(Math.random() * min_size + size_range, Math.random() * min_size + size_range, color);
+        Rectangle particle = new Rectangle(Math.random() * minSize + sizeRange, Math.random() * minSize + sizeRange, color);
         particle.setOpacity(0.8);
 
         particle.setTranslateX(Math.random() * backgroundWidth);
@@ -237,8 +254,12 @@ public class Util {
 
     // Timing methods
     public static void delay(double seconds, Runnable action) {
+        System.out.println("Delaying for " + seconds + " seconds");
         PauseTransition pause = new PauseTransition(Duration.seconds(seconds));
-        pause.setOnFinished(event -> action.run());
+        pause.setOnFinished(event -> {
+            System.out.println("Delay finished");
+            action.run();
+        });
         pause.play();
     }
 
@@ -248,7 +269,7 @@ public class Util {
     }
 
     public static Parent loadFXML(String fxml) throws IOException {
-        return FXMLLoader.load(Main.class.getResource(views_path + fxml + ".fxml"));
+        return FXMLLoader.load(Main.class.getResource(VIEWS_PATH + fxml + ".fxml"));
     }
 
     public static void addChild(StackPane root, String fxmlPath, Object controller) throws IOException {
@@ -276,12 +297,13 @@ public class Util {
         });
     }
 
-    public static boolean addChildOnce(StackPane root, String path, startingScrController controller, boolean bool_var) {
-        if (!bool_var) {
+    public static <T> boolean addChildOnce(StackPane root, String path, T controller, boolean boolVar) {
+        if (!boolVar) {
             try {
-                Util.addChild(root, path, controller);
+                addChild(root, path, controller);
                 return true;
             } catch (IOException e) {
+                e.printStackTrace(); // Log the exception
                 return false;
             }
         }
@@ -290,6 +312,23 @@ public class Util {
 
     public static void removeFromStackPane(Node node) {
         ((StackPane) node.getParent()).getChildren().remove(node);
+    }
+
+    public static void transitionToEvent(List<EventNode> nodes, int currentEvent, int nextEvent, double delayTime, Runnable onFinish) {
+        System.out.println("Transitioning from event: " + currentEvent + " to event: " + nextEvent);
+        if (currentEvent >= 0 && currentEvent < nodes.size()) {
+            nodes.get(currentEvent).exit.accept(delayTime, () -> {
+                if (nextEvent >= 0 && nextEvent < nodes.size()) {
+                    nodes.get(nextEvent).entrance.run();
+                    nodes.get(nextEvent).event.run();
+                    onFinish.run();
+                }
+            });
+        } else if (nextEvent >= 0 && nextEvent < nodes.size()) {
+            nodes.get(nextEvent).entrance.run();
+            nodes.get(nextEvent).event.run();
+            onFinish.run();
+        }
     }
 
 }

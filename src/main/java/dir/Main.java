@@ -1,7 +1,5 @@
 package dir;
 
-import java.io.IOException;
-
 import dir.utilities.Util;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -19,14 +17,17 @@ public class Main extends Application {
     public static final int[] initSize = {950, 650};
 
     @Override
-    public void start(Stage stage) throws IOException {
-        mp = Util.createMediaPlayer("bgm");
-        scene = Util.createScene("roots/startingScreen", initSize[0], initSize[1]);
+    public void start(Stage stage) {
+        try {
+            mp = Util.createMediaPlayer("bgm");
+            scene = Util.createScene("roots/startingScreen", initSize[0], initSize[1]);
 
-        setStage(stage);
+            setStage(stage);
 
-        Util.playAudio(mp, true);
-
+            Util.playAudio(mp, true);
+        } catch (Exception e) {
+            e.printStackTrace(); // Log the exception
+        }
     }
 
     public static void main(String[] args) {
