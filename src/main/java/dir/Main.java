@@ -15,6 +15,7 @@ public class Main extends Application {
     public static Scene scene;
 
     public static final int[] initSize = {950, 650};
+    public static final double exit_delays = 0.3;
 
     @Override
     public void start(Stage stage) {

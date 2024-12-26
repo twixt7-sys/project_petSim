@@ -37,10 +37,14 @@ public class startingScrController {
     @FXML
     public VBox comps1;
 
-    private EventNode currentEvent;
+    private EventNode currentEvent = null;
     private final Stack<EventNode> eventHistory = new Stack<>();
     private final Map<String, EventNode> events = new HashMap<>();
     private final startingEvents eventHandlers;
+    private final double delay = 0.5;
+
+    // flags
+    private boolean isEventSet = false;
 
     public startingScrController() {
         this.eventHandlers = new startingEvents(this);
@@ -49,9 +53,13 @@ public class startingScrController {
     public void initialize() throws IOException {
         events.put("event0", new EventNode(eventHandlers::entrance0, eventHandlers::event0, eventHandlers::exit0));
         events.put("event1", new EventNode(eventHandlers::entrance1, eventHandlers::event1, eventHandlers::exit1));
+        events.put("choose_pet", new EventNode(eventHandlers::entranceChoosePet, eventHandlers::eventChoosePet, eventHandlers::exitChoosePet));
 
         Platform.runLater(() -> {
-            setCurrentEvent("event0");
+            if (!isEventSet) {
+                setCurrentEvent("event0");
+                isEventSet = true;
+            }
             Util.addLeftRightKeyListeners(Main.scene, this::nextEvent, this::previousEvent);
         });
     }
@@ -63,8 +71,10 @@ public class startingScrController {
             eventHistory.push(currentEvent);
         }
         currentEvent = newEvent;
-        currentEvent.entrance.run();
-        currentEvent.body.run();
+        Util.delay(delay, () -> {
+            currentEvent.entrance.run();
+            currentEvent.body.run();
+        });
     }
 
     public void nextEvent() {
@@ -77,16 +87,18 @@ public class startingScrController {
             currentEvent = eventHistory.pop();
             currentEvent.entrance.run();
             currentEvent.body.run();
+        } else {
+            System.out.println("No more events in history");
         }
     }
 
     @FXML
     private void switchToCreatePet() {
-        System.out.println("Button Activated");
+        setCurrentEvent("choose_pet");
     }
 
     @FXML
     private void switchToChooseLoad() {
-        System.out.println("Button Activated");
+        System.out.println("load");
     }
 }

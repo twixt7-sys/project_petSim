@@ -6,9 +6,12 @@ import javafx.scene.paint.Color;
 public class startingEvents {
 
     private final startingScrController controller;
+
+    // flags
     private boolean isTitleAdded = false;
     private boolean isDiv1Added = false;
     private boolean isEv1Added = false;
+    private boolean isChoosePetAdded = false;
 
     public startingEvents(startingScrController controller) {
         this.controller = controller;
@@ -50,23 +53,26 @@ public class startingEvents {
 
     public void exit0() {
         System.out.println("exit0 called");
-        Util.easeOut(controller.title_img, 0.5);
-        Util.easeOut(controller.pstp_img, 0.5);
+        double delay = 0.5;
+        Util.easeOut(controller.title_img, delay);
+        Util.easeOut(controller.pstp_img, delay);
+        Util.delay(delay, () -> Util.removeFromParent(controller.pstp_img));
     }
 
     public void entrance1() {
         System.out.println("entrance1 called");
+        Util.addChildOnce(controller.root, "interfaces/div1", controller, isDiv1Added);
+        isDiv1Added = true;
+        Util.addChildOnce(controller.div1, "fxcomponents/ev1", controller, isEv1Added);
+        isEv1Added = true;
+        controller.comps1.setOpacity(0);
         Util.transitionWidth(controller.div1, 1);
     }
 
     public void event1() {
         System.out.println("Starting event1");
-        Util.addChildOnce(controller.root, "interfaces/div1", controller, isDiv1Added);
-        isDiv1Added = true;
 
         Util.delay(1, () -> {
-            Util.addChildOnce(controller.div1, "fxcomponents/ev1", controller, isEv1Added);
-            isEv1Added = true;
             Util.fadeIn(controller.comps1, 1);
         });
     }
@@ -74,5 +80,22 @@ public class startingEvents {
     public void exit1() {
         System.out.println("exit1 called");
         Util.easeOut(controller.div1, 0.5);
+        Util.delay(0.5, () -> Util.removeFromParent(controller.div1));
+    }
+
+    public void entranceChoosePet() {
+        System.out.println("entranceChoosePet called");
+        Util.addChildOnce(controller.root, "interfaces/div1", controller, isChoosePetAdded);
+        isChoosePetAdded = true;
+        Util.addChildOnce(controller.div1, "fxcomponents/choosePet", controller, isEv1Added);
+        isEv1Added = true;
+    }
+
+    public void eventChoosePet() {
+        System.out.println("Starting eventChoosePet");
+    }
+
+    public void exitChoosePet() {
+        System.out.println("exitChoosePet called");
     }
 }

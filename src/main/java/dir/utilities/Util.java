@@ -1,6 +1,7 @@
 package dir.utilities;
 
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.List;
 
 import dir.Main;
@@ -12,7 +13,9 @@ import javafx.animation.PauseTransition;
 import javafx.animation.ScaleTransition;
 import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -23,6 +26,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -103,6 +107,7 @@ public class Util {
     }
 
     public static void transitionWidth(Node node, double duration) {
+        node.setScaleX(0);
         if (node.getScaleX() == 1) {
             return; // Check if transition is already applied
         }
@@ -312,5 +317,18 @@ public class Util {
 
     public static void removeFromStackPane(Node node) {
         ((StackPane) node.getParent()).getChildren().remove(node);
+    }
+
+    public static void removeFromParent(Node node) {
+        if (node.getParent() != null) {
+            try {
+                Method getChildrenMethod = node.getParent().getClass().getMethod("getChildren");
+                @SuppressWarnings("unchecked")
+                ObservableList<Node> children = (ObservableList<Node>) getChildrenMethod.invoke(node.getParent());
+                children.remove(node);
+            } catch (Exception e) {
+                throw new UnsupportedOperationException("Unsupported parent type: " + node.getParent().getClass().getName(), e);
+            }
+        }
     }
 }
