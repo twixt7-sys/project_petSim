@@ -10,6 +10,7 @@ import dir.events.EventNode;
 import dir.utilities.Util;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
@@ -43,6 +44,14 @@ public class startingScrController {
     public BorderPane choosepetdiv;
     @FXML
     public ImageView dog_img, cat_img, frog_img;
+    @FXML
+    public VBox vb1, vb2;
+
+    // enter pet name components
+    @FXML
+    public VBox vb_entername;
+    @FXML
+    public TextField tf;
 
     private EventNode currentEvent = null;
     private final Stack<EventNode> eventHistory = new Stack<>();
@@ -61,6 +70,8 @@ public class startingScrController {
         events.put("event0", new EventNode(eventHandlers::entrance0, eventHandlers::event0, eventHandlers::exit0));
         events.put("event1", new EventNode(eventHandlers::entrance1, eventHandlers::event1, eventHandlers::exit1));
         events.put("choose_pet", new EventNode(eventHandlers::entranceChoosePet, eventHandlers::eventChoosePet, eventHandlers::exitChoosePet));
+        events.put("enter_pet_name", new EventNode(eventHandlers::entranceEnterPetName, eventHandlers::eventEnterPetName, eventHandlers::exitEnterPetName));
+        events.put("switchToGame", new EventNode(eventHandlers::entranceSwitchToGame, eventHandlers::eventSwitchToGame, eventHandlers::exitSwitchToGame));
 
         Platform.runLater(() -> {
             if (!isEventSet) {
@@ -107,5 +118,33 @@ public class startingScrController {
     @FXML
     private void switchToChooseLoad() {
         System.out.println("load");
+    }
+
+    @FXML
+    private void dogButtonClicked() {
+        System.out.println("dog");
+        Main.pet = "dog";
+        setCurrentEvent("enter_pet_name");
+    }
+
+    @FXML
+    private void catButtonClicked() {
+        System.out.println("cat");
+        Main.pet = "cat";
+        setCurrentEvent("enter_pet_name");
+    }
+
+    @FXML
+    private void frogButtonClicked() {
+        System.out.println("frog");
+        Main.pet = "frog";
+        setCurrentEvent("enter_pet_name");
+    }
+
+    @FXML
+    private void handleEnterKey() {
+        System.out.println("Enter key pressed");
+        System.out.println("Pet name: " + tf.getText());
+        setCurrentEvent("switchToGame");
     }
 }

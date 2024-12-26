@@ -1,6 +1,6 @@
 module dir {
-    requires javafx.controls;
-    requires javafx.fxml;
+    requires transitive javafx.controls;
+    requires transitive javafx.fxml;
     requires transitive javafx.media;
     requires transitive javafx.graphics;
 

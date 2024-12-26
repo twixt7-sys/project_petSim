@@ -12,6 +12,9 @@ public class startingEvents {
     private boolean isDiv1Added = false;
     private boolean isEv1Added = false;
     private boolean isChoosePetAdded = false;
+    private boolean isEv2Added = false;
+    private boolean isEnterNameAdded = false;
+    private boolean isEv3Added = false;
 
     public startingEvents(startingScrController controller) {
         this.controller = controller;
@@ -32,8 +35,7 @@ public class startingEvents {
         Util.bindImageHeight(controller.bg_img, 1, 0);
         Util.bindAnchorPane(controller.particle_pane, 1, 0);
 
-        Util.addChildOnce(controller.root, "fxcomponents/titles", controller, isTitleAdded);
-        isTitleAdded = true;
+        isTitleAdded = Util.addChildOnce(controller.root, "fxcomponents/titles", controller, isTitleAdded);
         Util.bindImageHeight(controller.pstp_img, 0.04, 0);
         Util.bindImageHeight(controller.title_img, 0.35, 0);
         Util.applyShadow(controller.title_img, 0, 5, 5, 5, new Color(0, 0, 0, 0.25));
@@ -57,14 +59,13 @@ public class startingEvents {
         Util.easeOut(controller.title_img, delay);
         Util.easeOut(controller.pstp_img, delay);
         Util.delay(delay, () -> Util.removeFromParent(controller.pstp_img));
+        isTitleAdded = false;
     }
 
     public void entrance1() {
         System.out.println("entrance1 called");
-        Util.addChildOnce(controller.root, "interfaces/div1", controller, isDiv1Added);
-        isDiv1Added = true;
-        Util.addChildOnce(controller.div1, "fxcomponents/ev1", controller, isEv1Added);
-        isEv1Added = true;
+        isDiv1Added = Util.addChildOnce(controller.root, "interfaces/div1", controller, isDiv1Added);
+        isEv1Added = Util.addChildOnce(controller.div1, "fxcomponents/ev1", controller, isEv1Added);
         controller.comps1.setOpacity(0);
         Util.transitionWidth(controller.div1, 0.5);
     }
@@ -78,24 +79,76 @@ public class startingEvents {
         System.out.println("exit1 called");
         Util.easeOut(controller.div1, 0.5);
         Util.delay(0.5, () -> Util.removeFromParent(controller.div1));
+        isDiv1Added = false;
+        isEv1Added = false;
     }
 
     public void entranceChoosePet() {
         System.out.println("entranceChoosePet called");
-        Util.addChildOnce(controller.root, "interfaces/div1", controller, isChoosePetAdded);
-        isChoosePetAdded = true;
-        Util.addChildOnce(controller.div1, "fxcomponents/choosepet", controller, isEv1Added);
-        isEv1Added = true;
+        isChoosePetAdded = Util.addChildOnce(controller.root, "interfaces/div1", controller, isChoosePetAdded);
+        isEv2Added = Util.addChildOnce(controller.div1, "fxcomponents/choosepet", controller, isEv2Added);
+
+        controller.vb1.setOpacity(0);
+        controller.vb2.setOpacity(0);
+
         Util.transitionWidth(controller.div1, 0.5);
     }
 
     public void eventChoosePet() {
         System.out.println("Starting eventChoosePet");
-        Util.oscillateY(controller.choosepetdiv, 1.5, 10);
-        Util.delay(1, () -> Util.fadeIn(controller.choosepetdiv, 1));
+        Util.oscillateY(controller.vb2, 1.5, 10);
+        Util.bindImageHeight(controller.dog_img, 0.25, 0);
+        Util.bindImageHeight(controller.cat_img, 0.25, 0);
+        Util.bindImageHeight(controller.frog_img, 0.25, 0);
+        Util.delay(1, () -> {
+            Util.fadeIn(controller.vb1, 1);
+            Util.fadeIn(controller.vb2, 1);
+        });
     }
 
     public void exitChoosePet() {
         System.out.println("exitChoosePet called");
+        Util.easeOut(controller.div1, 0.5);
+        Util.delay(0.5, () -> Util.removeFromParent(controller.div1));
+        isChoosePetAdded = false;
+        isEv2Added = false;
+    }
+
+    public void entranceEnterPetName() {
+        System.out.println("entranceEnterPetName called");
+        isEnterNameAdded = Util.addChildOnce(controller.root, "interfaces/div1", controller, isEnterNameAdded);
+        isEv3Added = Util.addChildOnce(controller.div1, "fxcomponents/entername", controller, isEv3Added);
+        controller.vb_entername.setOpacity(0);
+        controller.tf.setOpacity(0);
+
+        Util.transitionWidth(controller.div1, 0.5);
+    }
+
+    public void eventEnterPetName() {
+        System.out.println("eventEnterPetName called");
+        Util.delay(1, () -> {
+            Util.fadeIn(controller.vb_entername, 1);
+            Util.fadeIn(controller.tf, 1);
+        });
+    }
+
+    public void exitEnterPetName() {
+        System.out.println("exitEnterPetName called");
+        Util.easeOut(controller.div1, 0.5);
+        Util.delay(0.5, () -> Util.removeFromParent(controller.div1));
+        isEnterNameAdded = false;
+        isEv3Added = false;
+    }
+
+    public void entranceSwitchToGame() {
+
+    }
+
+    public void eventSwitchToGame() {
+
+    }
+
+    public void exitSwitchToGame() {
+
     }
 }

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.control.Separator?>
+
+<VBox xmlns="http://javafx.com/javafx"
+    xmlns:fx="http://javafx.com/fxml"
+
+    styleClass="v-box1" fx:id="comps1" alignment="CENTER">
+    <VBox fx:id="vb_entername" styleClass="v-box2" alignment="TOP_CENTER">
+        <Label styleClass="div-label" text="Please enter your pet's name" />
+        <Separator styleClass="divider"/>
+    </VBox>
+    <TextField fx:id="tf" styleClass="tf" alignment="CENTER" onAction="#handleEnterKey"/>
+</VBox>

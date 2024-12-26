@@ -10,24 +10,23 @@
 
 <BorderPane xmlns="http://javafx.com/javafx"
     xmlns:fx="http://javafx.com/fxml"
-    fx:id="choosepetdiv" styleClass="div1">
+    fx:id="choosepetdiv">
         <top>
-            <VBox styleClass="v-box1">
+            <VBox fx:id="vb1" styleClass="v-box1">
                 <Label styleClass="div-label" text="Please Choose a Pet"/>
                 <Separator styleClass="divider"/>
             </VBox>
         </top>
-
         <center>
-            <VBox styleClass="v-box1">
+            <VBox fx:id="vb2" styleClass="v-box1">
                 <HBox styleClass="v-box2" alignment="CENTER">
-                    <ImageView fx:id="dog_img" preserveRatio="true">
+                    <ImageView fx:id="dog_img" preserveRatio="true" onMouseClicked="#dogButtonClicked">
                         <Image url="@../../media/pictures/pets/doggy.png"/>
                     </ImageView>
-                    <ImageView fx:id="cat_img" preserveRatio="true">
+                    <ImageView fx:id="cat_img" preserveRatio="true" onMouseClicked="#catButtonClicked">
                         <Image url="@../../media/pictures/pets/kitty.png"/>
                     </ImageView>
-                    <ImageView fx:id="frog_img" preserveRatio="true">
+                    <ImageView fx:id="frog_img" preserveRatio="true" onMouseClicked="#frogButtonClicked">
                         <Image url="@../../media/pictures/pets/froggy.png"/>
                     </ImageView>
                 </HBox>

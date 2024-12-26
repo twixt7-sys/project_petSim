@@ -10,6 +10,8 @@ import javafx.stage.StageStyle;
 
 public class Main extends Application {
 
+    public static String pet;
+
     public static ImageView bg_img;
     public static MediaPlayer mp;
     public static Scene scene;
