@@ -12,6 +12,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
@@ -36,6 +37,12 @@ public class startingScrController {
     public StackPane div1;
     @FXML
     public VBox comps1;
+
+    // choose pet components
+    @FXML
+    public BorderPane choosepetdiv;
+    @FXML
+    public ImageView dog_img, cat_img, frog_img;
 
     private EventNode currentEvent = null;
     private final Stack<EventNode> eventHistory = new Stack<>();

@@ -66,15 +66,12 @@ public class startingEvents {
         Util.addChildOnce(controller.div1, "fxcomponents/ev1", controller, isEv1Added);
         isEv1Added = true;
         controller.comps1.setOpacity(0);
-        Util.transitionWidth(controller.div1, 1);
+        Util.transitionWidth(controller.div1, 0.5);
     }
 
     public void event1() {
         System.out.println("Starting event1");
-
-        Util.delay(1, () -> {
-            Util.fadeIn(controller.comps1, 1);
-        });
+        Util.delay(1, () -> Util.fadeIn(controller.comps1, 1));
     }
 
     public void exit1() {
@@ -87,12 +84,15 @@ public class startingEvents {
         System.out.println("entranceChoosePet called");
         Util.addChildOnce(controller.root, "interfaces/div1", controller, isChoosePetAdded);
         isChoosePetAdded = true;
-        Util.addChildOnce(controller.div1, "fxcomponents/choosePet", controller, isEv1Added);
+        Util.addChildOnce(controller.div1, "fxcomponents/choosepet", controller, isEv1Added);
         isEv1Added = true;
+        Util.transitionWidth(controller.div1, 0.5);
     }
 
     public void eventChoosePet() {
         System.out.println("Starting eventChoosePet");
+        Util.oscillateY(controller.choosepetdiv, 1.5, 10);
+        Util.delay(1, () -> Util.fadeIn(controller.choosepetdiv, 1));
     }
 
     public void exitChoosePet() {

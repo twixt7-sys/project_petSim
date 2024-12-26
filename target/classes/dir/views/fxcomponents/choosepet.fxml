@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+    xmlns:fx="http://javafx.com/fxml"
+    fx:id="choosepetdiv" styleClass="div1">
+        <top>
+            <VBox styleClass="v-box1">
+                <Label styleClass="div-label" text="Please Choose a Pet"/>
+                <Separator styleClass="divider"/>
+            </VBox>
+        </top>
+
+        <center>
+            <VBox styleClass="v-box1">
+                <HBox styleClass="v-box2" alignment="CENTER">
+                    <ImageView fx:id="dog_img" preserveRatio="true">
+                        <Image url="@../../media/pictures/pets/doggy.png"/>
+                    </ImageView>
+                    <ImageView fx:id="cat_img" preserveRatio="true">
+                        <Image url="@../../media/pictures/pets/kitty.png"/>
+                    </ImageView>
+                    <ImageView fx:id="frog_img" preserveRatio="true">
+                        <Image url="@../../media/pictures/pets/froggy.png"/>
+                    </ImageView>
+                </HBox>
+            </VBox>
+        </center>
+</BorderPane>

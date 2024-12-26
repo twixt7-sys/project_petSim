@@ -2,10 +2,8 @@ package dir.utilities;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
-import java.util.List;
 
 import dir.Main;
-import dir.events.EventNode;
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.ParallelTransition;
@@ -15,7 +13,6 @@ import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -26,7 +23,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -278,10 +274,13 @@ public class Util {
     }
 
     public static void addChild(StackPane root, String fxmlPath, Object controller) throws IOException {
-        FXMLLoader loader = new FXMLLoader(controller.getClass().getResource("/dir/views/" + fxmlPath + ".fxml"));
-        loader.setController(controller);
-        Parent child = loader.load();
-        root.getChildren().add(child);
+        try {
+            FXMLLoader loader = new FXMLLoader(controller.getClass().getResource("/dir/views/" + fxmlPath + ".fxml"));
+            loader.setController(controller);
+            Parent child = loader.load();
+            root.getChildren().add(child);
+        } catch (IOException e) {
+        }
     }
 
     public static void addSpacebarListener(Scene scene, Runnable action) {
