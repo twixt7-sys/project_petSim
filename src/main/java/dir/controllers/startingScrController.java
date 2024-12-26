@@ -1,8 +1,9 @@
 package dir.controllers;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Stack;
 
 import dir.Main;
 import dir.events.EventNode;
@@ -36,54 +37,46 @@ public class startingScrController {
     @FXML
     public VBox comps1;
 
-    protected static int eventVal = 0;
-    protected static boolean isTransitioning = false;
-
-    protected static final boolean[] isAdded = new boolean[3];
-    protected static boolean blinkfade = true;
-
-    protected final List<EventNode> nodes = new ArrayList<>();
-    protected final startingEvents events;
+    private EventNode currentEvent;
+    private final Stack<EventNode> eventHistory = new Stack<>();
+    private final Map<String, EventNode> events = new HashMap<>();
+    private final startingEvents eventHandlers;
 
     public startingScrController() {
-        this.events = new startingEvents(this);
+        this.eventHandlers = new startingEvents(this);
     }
 
     public void initialize() throws IOException {
-        nodes.add(new EventNode(events::entrance0, events::event0, events::exit0));
-        nodes.add(new EventNode(events::entrance1, events::event1, events::exit1));
+        events.put("event0", new EventNode(eventHandlers::entrance0, eventHandlers::event0, eventHandlers::exit0));
+        events.put("event1", new EventNode(eventHandlers::entrance1, eventHandlers::event1, eventHandlers::exit1));
 
         Platform.runLater(() -> {
-            triggerEvent();
-            Util.addLeftRightKeyListeners(Main.scene, this::incrementEvent, this::decrementEvent);
+            setCurrentEvent("event0");
+            Util.addLeftRightKeyListeners(Main.scene, this::nextEvent, this::previousEvent);
         });
     }
 
-    private void triggerEvent() {
-        eventVal = Math.max(0, Math.min(eventVal, nodes.size() - 1));
-        System.out.println("Triggering event: " + eventVal);
-
-        isTransitioning = true;
-        int previousEvent = eventVal - 1;
-        int nextEvent = eventVal;
-
-        Util.transitionToEvent(nodes, previousEvent, nextEvent, 0.5, () -> {
-            System.out.println("Transitioned to event: " + eventVal);
-            isTransitioning = false;
-        });
-    }
-
-    private void incrementEvent() {
-        if (!isTransitioning) {
-            eventVal++;
-            triggerEvent();
+    public void setCurrentEvent(String eventName) {
+        EventNode newEvent = events.get(eventName);
+        if (currentEvent != null) {
+            currentEvent.exit.run();
+            eventHistory.push(currentEvent);
         }
+        currentEvent = newEvent;
+        currentEvent.entrance.run();
+        currentEvent.body.run();
     }
 
-    private void decrementEvent() {
-        if (!isTransitioning) {
-            eventVal--;
-            triggerEvent();
+    public void nextEvent() {
+        setCurrentEvent("event1");
+    }
+
+    public void previousEvent() {
+        if (!eventHistory.isEmpty()) {
+            currentEvent.exit.run();
+            currentEvent = eventHistory.pop();
+            currentEvent.entrance.run();
+            currentEvent.body.run();
         }
     }
 

@@ -60,7 +60,7 @@ public class Util {
         return fade;
     }
 
-    private static TranslateTransition translate(Node node, double duration, boolean horiz, double from, double to, boolean reverse, int cycle) {
+    public static TranslateTransition translate(Node node, double duration, boolean horiz, double from, double to, boolean reverse, int cycle) {
         TranslateTransition translate = new TranslateTransition(Duration.seconds(duration), node);
         if (horiz) {
             translate.setFromX(from);
@@ -313,22 +313,4 @@ public class Util {
     public static void removeFromStackPane(Node node) {
         ((StackPane) node.getParent()).getChildren().remove(node);
     }
-
-    public static void transitionToEvent(List<EventNode> nodes, int currentEvent, int nextEvent, double delayTime, Runnable onFinish) {
-        System.out.println("Transitioning from event: " + currentEvent + " to event: " + nextEvent);
-        if (currentEvent >= 0 && currentEvent < nodes.size()) {
-            nodes.get(currentEvent).exit.accept(delayTime, () -> {
-                if (nextEvent >= 0 && nextEvent < nodes.size()) {
-                    nodes.get(nextEvent).entrance.run();
-                    nodes.get(nextEvent).event.run();
-                    onFinish.run();
-                }
-            });
-        } else if (nextEvent >= 0 && nextEvent < nodes.size()) {
-            nodes.get(nextEvent).entrance.run();
-            nodes.get(nextEvent).event.run();
-            onFinish.run();
-        }
-    }
-
 }
