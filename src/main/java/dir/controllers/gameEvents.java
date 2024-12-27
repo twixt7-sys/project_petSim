@@ -1,5 +1,6 @@
 package dir.controllers;
 
+import dir.Main;
 import dir.utilities.Util;
 import javafx.scene.paint.Color;
 
@@ -17,6 +18,10 @@ public class gameEvents {
         Util.fadeIn(controller.bg_img, 6);
         Util.fadeIn(controller.particle_pane, 30);
         Util.oscillateX(controller.bg_img, 20, 450);
+
+        Main.mp = Util.createMediaPlayer("bgm2");
+        Main.mp.play();
+        Util.easeInMusic(Main.mp, 1);
     }
 
     public void bodyGameEvent1() {

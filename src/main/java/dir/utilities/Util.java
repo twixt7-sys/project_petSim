@@ -6,6 +6,7 @@ import java.lang.reflect.Method;
 import dir.Main;
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
 import javafx.animation.ParallelTransition;
 import javafx.animation.PauseTransition;
 import javafx.animation.ScaleTransition;

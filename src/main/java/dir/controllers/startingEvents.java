@@ -1,5 +1,6 @@
 package dir.controllers;
 
+import dir.Main;
 import dir.utilities.Util;
 import javafx.scene.paint.Color;
 
@@ -147,6 +148,7 @@ public class startingEvents {
     public void eventSwitchToGame() {
         System.out.println("eventSwitchToGame called");
         Util.fadeOut(controller.root, 1);
+        Util.easeOutMusic(Main.mp, 1);
         Util.delay(1, () -> {
             Util.removeFromParent(controller.root);
             controller.switchToGame();
