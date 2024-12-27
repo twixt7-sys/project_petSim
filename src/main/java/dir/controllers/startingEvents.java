@@ -145,7 +145,12 @@ public class startingEvents {
     }
 
     public void eventSwitchToGame() {
-
+        System.out.println("eventSwitchToGame called");
+        Util.fadeOut(controller.root, 1);
+        Util.delay(1, () -> {
+            Util.removeFromParent(controller.root);
+            controller.switchToGame();
+        });
     }
 
     public void exitSwitchToGame() {

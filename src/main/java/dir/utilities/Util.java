@@ -190,6 +190,22 @@ public class Util {
         Main.mp.play();
     }
 
+    public static void easeInMusic(MediaPlayer mediaPlayer, double duration) {
+        Timeline timeline = new Timeline(
+                new KeyFrame(Duration.ZERO, new KeyValue(mediaPlayer.volumeProperty(), 0)),
+                new KeyFrame(Duration.seconds(duration), new KeyValue(mediaPlayer.volumeProperty(), 1))
+        );
+        timeline.play();
+    }
+
+    public static void easeOutMusic(MediaPlayer mediaPlayer, double duration) {
+        Timeline timeline = new Timeline(
+                new KeyFrame(Duration.ZERO, new KeyValue(mediaPlayer.volumeProperty(), mediaPlayer.getVolume())),
+                new KeyFrame(Duration.seconds(duration), new KeyValue(mediaPlayer.volumeProperty(), 0))
+        );
+        timeline.play();
+    }
+
     // Create Methods
     public static Scene createScene(String fxmlFile, double width, double height) {
         try {

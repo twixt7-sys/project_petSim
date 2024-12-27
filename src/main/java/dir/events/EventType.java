@@ -4,5 +4,6 @@ public enum EventType {
     EVENT0,
     EVENT1,
     CHOOSE_PET,
-    LOAD
+    LOAD,
+    ENTER_NAME
 }

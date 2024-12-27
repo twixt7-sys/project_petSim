@@ -10,6 +10,8 @@ import dir.events.EventNode;
 import dir.utilities.Util;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -82,6 +84,7 @@ public class startingScrController {
         });
     }
 
+    // event handlers
     public void setCurrentEvent(String eventName) {
         EventNode newEvent = events.get(eventName);
         if (currentEvent != null) {
@@ -89,10 +92,16 @@ public class startingScrController {
             eventHistory.push(currentEvent);
         }
         currentEvent = newEvent;
-        Util.delay(delay, () -> {
+
+        if ("event0".equals(eventName)) {
             currentEvent.entrance.run();
             currentEvent.body.run();
-        });
+        } else {
+            Util.delay(delay, () -> {
+                currentEvent.entrance.run();
+                currentEvent.body.run();
+            });
+        }
     }
 
     public void nextEvent() {
@@ -146,5 +155,19 @@ public class startingScrController {
         System.out.println("Enter key pressed");
         System.out.println("Pet name: " + tf.getText());
         setCurrentEvent("switchToGame");
+    }
+
+    public void switchToGame() {
+        System.out.println("Switching to game");
+        try {
+            FXMLLoader loader = new FXMLLoader(Main.class.getResource("views/roots/gameScreen.fxml"));
+            Parent gameRoot = loader.load();
+            Main.scene.setRoot(gameRoot);
+
+            gameScrController gameController = loader.getController();
+            gameController.setCurrentEvent("game_event1");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
